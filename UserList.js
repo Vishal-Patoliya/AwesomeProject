@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { AppState, Platform, StyleSheet, Text, View } from 'react-native';
 import Toast, { DURATION } from 'react-native-easy-toast';
+import { BackHandler } from 'react-native';
 
 const TAG = "LifeCycle"
 
@@ -24,23 +25,26 @@ export default class UserList extends Component {
     constructor() {
         super();
 
-        const itemId = navigation.getParam('username', 'No-UserId');
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
         console.log(TAG, "Constructor Called.");
     }
 
     componentWillMount() {
         console.log(TAG, "ComponentWillMount() Called.");
+        //BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+
     }
 
     render() {
         console.log(TAG, "render() Called.")
+        const itemId = this.props.navigation.getParam('username', 'No-UserId');
 
         return (
 
             <View style={styles.container}>
 
-                <Text style={styles.welcome}>Register</Text>
+                <Text style={styles.welcome}>{itemId = JSON.stringify(itemId)}</Text>
 
                 <Toast
                     ref="toast"
@@ -50,24 +54,10 @@ export default class UserList extends Component {
                     fadeOutDuration={1000}
                     opacity={0.8}
                 />
-                
-                this.refs.toast.show(this.state.username);
+
 
             </View>
         );
-    }
-
-    componentDidMount() {
-        console.log(TAG, "ComponentDidMount() Called.");
-        this.refs.toast.show("Hello");
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        this.state({
-            value = nextProps.myProps + "hello"
-        });
-
     }
 
     shouldComponentUpdate(nextProp, nextState) {
@@ -89,11 +79,16 @@ export default class UserList extends Component {
     }
 
     componentWillUnmount() {
-        console.log(TAG, 'componentWillUnmount Called', prevProps, prevState);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     componentDidCatch(error, info) {
         console.log(TAG, 'componentDidCatch Called');
+    }
+
+    handleBackButtonClick() {
+        this.props.navigation.goBack(null);
+        return true;
     }
 }
 

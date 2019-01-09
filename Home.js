@@ -39,12 +39,9 @@ export default class Home extends Component {
         console.log(this.state.username);
         console.log(this.state.password);
 
-        this.props.navigation.navigate('UserList',
-        {
-            username:this.state.username,
-            password:this.state.password
-        });
-        
+        // this.props.navigation.navigate('UserList',
+        //     {username : this.state.username});
+
     }
 
     render() {
@@ -54,7 +51,7 @@ export default class Home extends Component {
 
                 <View style={styles.container}>
 
-                    <Text style={styles.welcome}>Register</Text>
+                    <Text style={styles.welcome}>Registration</Text>
 
                     <TextInput
                         style={styles.textInput}
@@ -144,40 +141,40 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#F5FCFF',
-      flexDirection: 'column'
+        backgroundColor: '#F5FCFF',
+        flexDirection: 'column'
     },
     welcome: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 10,
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
     },
     textInput: {
-      height: 50,
-      alignSelf: 'stretch',
-      borderColor: 'gray',
-      borderWidth: 1,
-      margin: 10,
-      fontSize: 20
+        height: 50,
+        alignSelf: 'stretch',
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+        fontSize: 20
     },
     multilineTextInput: {
-      alignSelf: 'stretch',
-      borderColor: 'gray',
-      borderWidth: 1,
-      margin: 10,
-      fontSize: 20
+        alignSelf: 'stretch',
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+        fontSize: 20
     },
     radioGroupContainer: {
-      flexDirection: 'row'
+        flexDirection: 'row'
     },
     textLableStyle: {
-      margin: 10,
-      fontWeight: 'bold',
-      fontSize: 15,
+        margin: 10,
+        fontWeight: 'bold',
+        fontSize: 15,
     },
     buttonStyle: {
-      height: 50,
-      backgroundColor: "#841584",
-      margin: 50
+        height: 50,
+        backgroundColor: "#841584",
+        margin: 50
     }
-  });
+});

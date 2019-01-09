@@ -31,8 +31,12 @@ const instructions = Platform.select({
 
 const AppNavigator = createStackNavigator({
   Home: { screen: Home },
-  UserList: { screen: UserList }   
-});
+  UserList: { screen: UserList }
+},
+
+  {
+    initialRouteName: 'Home'
+  });
 
 const AppContainer = createAppContainer(AppNavigator);
 

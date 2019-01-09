@@ -4,8 +4,8 @@ import Home from './Home.js';
 import UserList from './UserList.js';
 
 export const AppNavigator = StackNavigator({
-    Home: { screen: Home },
-    UserList: { screen: UserList }   
+    UserList: { screen: UserList },
+    Home: { screen: Home }
 });
 
 export default AppNavigator;
