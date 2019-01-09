@@ -39,8 +39,8 @@ export default class Home extends Component {
         console.log(this.state.username);
         console.log(this.state.password);
 
-        // this.props.navigation.navigate('UserList',
-        //     {username : this.state.username});
+        this.props.navigation.navigate('UserList',
+            {username : this.state.username});
 
     }
 

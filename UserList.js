@@ -38,13 +38,13 @@ export default class UserList extends Component {
 
     render() {
         console.log(TAG, "render() Called.")
-        const itemId = this.props.navigation.getParam('username', 'No-UserId');
+        const username = this.props.navigation.getParam('username', 'No-UserId');
 
         return (
 
             <View style={styles.container}>
 
-                <Text style={styles.welcome}>{itemId = JSON.stringify(itemId)}</Text>
+                <Text style={styles.welcome}>{JSON.stringify(username)}</Text>
 
                 <Toast
                     ref="toast"
