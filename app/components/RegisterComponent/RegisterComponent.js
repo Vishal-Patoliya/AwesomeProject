@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, Picker, ScrollView, Button } from 'react-native';
+import { AsyncStorage, Button, Picker, ScrollView, Text, TextInput, View } from 'react-native';
+import Toast from 'react-native-easy-toast';
 import RadioGroup from 'react-native-radio-buttons-group';
-import Toast, { DURATION } from 'react-native-easy-toast';
+import prefskey from '../../utils/constants/prefskeys';
+import prefsManager from '../../utils/prefsmanager';
+import styles from './style';
+import UserModel from '../../data/UserModel'
 
-export default class Home extends Component {
+export default class RegisterComponent extends Component {
 
     state = {
         stateName: '',
@@ -12,6 +16,14 @@ export default class Home extends Component {
         mobile: '',
         gender: '',
         address: '',
+
+        options: {
+            "0": "Select State",
+            "1": "Gujarat",
+            "2": "Ahmedabad",
+            "3": "Rajkot",
+            "4": "Surat",
+        },
 
         data: [
             {
@@ -28,30 +40,49 @@ export default class Home extends Component {
     // update state
     onPress = data => this.setState({ data });
 
-    updateUser = (stateName) => {
+    onGenderSelected(value) {
+        this.setState({ value: value })
+
+        let selectedButton = this.state.data.find(e => e.selected == true);
+        this.state.gender = selectedButton ? selectedButton.value : this.state.data[0].value;
+    }
+    // IMEI :356029080496960
+    
+    onStateSelected = (stateName) => {
         this.setState({ stateName: stateName })
     }
 
-    _handlePress() {
+    _handlePress = async () => {
 
         this.refs.toast.show(this.state.username);
+
+        UserModel.username = this.state.username
+        UserModel.stateName = this.state.stateName
+        UserModel.email = this.state.email
+        UserModel.mobile = this.state.mobile
+        UserModel.gender = this.state.gender
+        UserModel.address = this.state.address
 
         console.log(this.state.username);
         console.log(this.state.password);
 
         this.props.navigation.navigate('UserList',
-            {username : this.state.username});
+            { userData: UserModel }
+        );
+
+        await prefsManager.setValue(prefskey.username, this.state.username)
+
+        console.log("username =>>", await prefsManager.getValue(prefskey.username));
 
     }
 
     render() {
+
         return (
 
             <ScrollView>
 
                 <View style={styles.container}>
-
-                    <Text style={styles.welcome}>Registration</Text>
 
                     <TextInput
                         style={styles.textInput}
@@ -83,14 +114,10 @@ export default class Home extends Component {
 
                             <Picker
                                 mode="dropdown"
-                                selectedValue={this.state.stateName} onValueChange={this.updateUser}>
-                                <Picker.Item label="Select State" value="1" />
-                                <Picker.Item label="Gujarat" value="2" />
-                                <Picker.Item label="Rajasthan" value="3" />
-                                <Picker.Item label="M.P" value="4" />
-                                <Picker.Item label="U.P" value="5" />
-                                <Picker.Item label="Hariyana" value="6" />
-                                <Picker.Item label="Karnataka" value="7" />
+                                selectedValue={this.state.stateName} onValueChange={this.onStateSelected}>
+                                {Object.keys(this.state.options).map((key) => {
+                                    return (<Picker.Item label={this.state.options[key]} value={key} key={key} />) //if you have a bunch of keys value pair
+                                })}
                             </Picker>
 
                         </View>
@@ -98,10 +125,11 @@ export default class Home extends Component {
                     </View>
 
                     <View style={styles.radioGroupContainer}>
-
                         <Text style={styles.textLableStyle}>Select Gender</Text>
 
-                        <RadioGroup style={alignItems = 'flex-start'} radioButtons={this.state.data} onPress={this.onPress} />
+                        <RadioGroup style={alignItems = 'flex-start'} radioButtons={this.state.data}
+                            onChange={this.onRadiochange}
+                            onPress={this.onGenderSelected.bind(this)} />
 
                     </View>
 
@@ -132,49 +160,6 @@ export default class Home extends Component {
                 </View>
 
             </ScrollView>
-
-
         );
     }
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#F5FCFF',
-        flexDirection: 'column'
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    textInput: {
-        height: 50,
-        alignSelf: 'stretch',
-        borderColor: 'gray',
-        borderWidth: 1,
-        margin: 10,
-        fontSize: 20
-    },
-    multilineTextInput: {
-        alignSelf: 'stretch',
-        borderColor: 'gray',
-        borderWidth: 1,
-        margin: 10,
-        fontSize: 20
-    },
-    radioGroupContainer: {
-        flexDirection: 'row'
-    },
-    textLableStyle: {
-        margin: 10,
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    buttonStyle: {
-        height: 50,
-        backgroundColor: "#841584",
-        margin: 50
-    }
-});

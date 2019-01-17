@@ -28,6 +28,9 @@ export default class UserList extends Component {
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
         console.log(TAG, "Constructor Called.");
+
+        //console.log(TAG, UserModel.username);
+
     }
 
     componentWillMount() {
@@ -38,13 +41,22 @@ export default class UserList extends Component {
 
     render() {
         console.log(TAG, "render() Called.")
-        const username = this.props.navigation.getParam('username', 'No-UserId');
+        const UserModel = this.props.navigation.getParam('userData');
+
+        console.log("UserList-Username", UserModel.username)
 
         return (
 
             <View style={styles.container}>
 
-                <Text style={styles.welcome}>{JSON.stringify(username)}</Text>
+                <Text style={styles.welcome}>{
+                    UserModel.username + "\n" + 
+                    UserModel.stateName + "\n" + 
+                    UserModel.email + "\n" + 
+                    UserModel.mobile + "\n" + 
+                    UserModel.gender + "\n" + 
+                    UserModel.address
+                    }</Text>
 
                 <Toast
                     ref="toast"
@@ -54,7 +66,6 @@ export default class UserList extends Component {
                     fadeOutDuration={1000}
                     opacity={0.8}
                 />
-
 
             </View>
         );

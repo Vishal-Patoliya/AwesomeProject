@@ -1,11 +1,34 @@
-import { StackNavigator } from 'react-navigation';
+import {
+    createStackNavigator,
+    createAppContainer
+} from 'react-navigation';
 
-import Home from './Home.js';
+import RegisterComponent from './app/components/RegisterComponent';
 import UserList from './UserList.js';
 
-export const AppNavigator = StackNavigator({
-    UserList: { screen: UserList },
-    Home: { screen: Home }
-});
+const AppNavigator = createStackNavigator({
+    RegisterComponent: {
+        screen: RegisterComponent,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Registration',
+            headerTitleStyle: {
+                alignSelf: 'center',
+                textAlign: 'center',
+                width: '100%',
+            },
+        })
+    },
+    UserList: {
+        screen: UserList,
+        navigationOptions: ({ navigation }) => ({
+            title: 'User Details'
+        })
+    }
+},
+    {
+        initialRouteName: 'RegisterComponent'
+    });
 
-export default AppNavigator;
+const AppContainer = createAppContainer(AppNavigator);
+
+export default AppContainer;
